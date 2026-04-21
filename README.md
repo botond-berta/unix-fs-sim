@@ -1,66 +1,40 @@
 # unix-fs-sim
 
-A UNIX-style filesystem simulator written in C++. Supports a hierarchical directory structure with files, directories, and symbolic links — all in memory, with persistent storage between sessions.
+A C++ implementation of a hierarchical filesystem simulator. It manages files, directories, and symbolic links in memory with a custom serialization engine for state persistence.
 
 ## Features
 
-- Navigate the filesystem with familiar UNIX commands (`cd`, `ls`)
-- Create and remove files and directories (`touch`, `mkdir`, `rm`)
-- Move and rename entries (`mv`)
-- Create symbolic links to directories (`ln`)
-- Supports both absolute and relative paths, including `..`
-- Persistent state: automatically saved to and loaded from `filesystem.dat`
-- Fully redirectable stdin/stdout — works in batch mode
+- **Standard Navigation**: Supports absolute and relative path resolution (including `..`).
+- **File Operations**: Implements `mkdir`, `touch`, `ls`, `rm`, `cd`, `ln`, and `mv`.
+- **Memory Management**: Recursive cleanup of directory structures to prevent memory leaks.
+- **Persistence**: Automated state serialization to and from `filesystem.dat`.
+- **I/O Redirection**: Standard streams are fully redirectable for batch processing.
+
+## Implementation Details
+
+The project is designed with zero external dependencies to ensure portability and minimal runtime overhead.
+
+### Custom Data Structures
+To comply with specific technical constraints, no STL containers are used. The following structures are implemented from scratch:
+- **`Vector<T>`**: A generic, dynamically resizing array.
+- **`String`**: A memory-managed character array for path and name storage.
+
+### Class Hierarchy
+The system uses a polymorphic model based on a common interface:
+- `FileSystemElement`: Abstract base class for all filesystem nodes.
+- `Directory`: Container node for managing collections of elements.
+- `File`: Terminal data unit.
+- `Link`: Reference node for directory-level cross-linking.
 
 ## Usage
 
-```
-mkdir <path>        Create a new directory
-touch <path>        Create a new empty file
-ls [path]           List directory contents
-cd <path>           Change current directory
-ln <source> <dest>  Create a symbolic link to a directory
-rm <path>           Remove a file, link, or directory (recursive)
-mv <source> <dest>  Move or rename an entry
-exit                Save state and quit
-```
-
-### Example session
-
-```
-/> mkdir home
-/> mkdir home/user
-/> touch home/user/notes.txt
-/> ln home/user docs_link
-/> cd home/user
-/home/user> ls
-notes.txt
-/home/user> cd ../..
-/> ls
-home/
-docs_link -> /home/user
-```
-
-## Persistence
-
-The filesystem state is saved automatically to `filesystem.dat` on exit and restored on startup. The file format is plain text:
-
-```
-DIR /home
-DIR /home/user
-FILE /home/user/notes.txt
-LINK /docs_link -> /home/user
-```
-
-## Build
+### Building the Project
 
 ```bash
-g++ -o fs main.cpp
-./fs
-```
+g++ -o fs_sim src/*.cpp
 
-## Implementation
+## Architecture Visualization
 
-- No STL containers used — all data structures implemented from scratch
-- Object-oriented design with a clean inheritance hierarchy
-- Modular structure with separate compilation units
+The system's class structure follows a strict inheritance hierarchy to ensure type safety and polymorphic behavior across different filesystem entries.
+
+![UML Diagram](uml.svg)
