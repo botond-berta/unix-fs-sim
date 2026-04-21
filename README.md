@@ -32,6 +32,7 @@ The system uses a polymorphic model based on a common interface:
 
 ```bash
 g++ -o fs_sim src/*.cpp
+```
 
 ## Architecture Visualization
 
