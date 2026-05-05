@@ -17,9 +17,10 @@ String::String(const char* s) {
 
 String::String(const String& str) {
     len = str.len;
-    pData = new char[len];
+    pData = new char[len + 1];
     for (int i = 0; i < len; i++) 
         pData[i] = str.pData[i];
+    pData[len] = '\0';
 }
 
 String::~String() {
@@ -30,9 +31,10 @@ String& String::operator=(const String& rhs_str) {
     if (this->pData == rhs_str.pData) return *this;
     delete[] pData;
     len = rhs_str.len;
-    pData = new char[len];
+    pData = new char[len + 1];
     for (int i = 0; i < len; i++)
         pData[i] = rhs_str.pData[i];
+    pData[len] = '\0';
     return *this;
 }
 

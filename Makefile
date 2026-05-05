@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS = -Wall -Werror -pedantic -std=c++11 -DMEMTRACE
 
 # Source files (used in both main and tests)
-COMMON_SRCS = string.cpp memtrace.cpp
+COMMON_SRCS = string.cpp memtrace.cpp vector.cpp filesystem_element.cpp directory.cpp file.cpp link.cpp
 COMMON_OBJS = $(COMMON_SRCS:.cpp=.o)
 
 # Target executable names
